@@ -4,12 +4,17 @@ import cors from "cors";
 import UserModel from "./Models/UserModel.js";
 import PostModel from "./Models/PostModel.js";
 import dotenv from "dotenv";
+import multer from "multer";
+import fs from "fs";
+import path from "path";
+
 dotenv.config();
 
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(express.json());
 
 
 const con = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@postitcluster.osp4y.mongodb.net/${process.env.MONGO_DATABASE}?retryWrites=true&w=majority&appName=PostITCluster`;
@@ -19,6 +24,84 @@ mongoose.connect(con);
 app.listen(process.env.PORT, () => {
    console.log("You are connected");
 });
+
+
+/* app.put("/updateUserProfile/: email/", async (req, res) => {
+  //Retrieve the value from the route
+  const email= req.params.email;
+
+  try {
+  } catch (err) {
+    res.status(500).json({ error: err });
+    return;
+  }
+});
+app.put("/updateUserProfile/:email/", async (req, res) => {
+  //Retrieve the value from the route
+  const email = req.params.email;
+  //Retrieve the values from the request body.
+  const name = req.body.name;
+  const password = req.body.password;
+
+  try {
+  } catch (err) {
+    res.status(500).json({ error: err });
+    return;
+  }
+});
+app.put("/updateUserProfile/:email/", async (req, res) => {
+  //Retrieve the value from the route
+  const email = req.params.email;
+  //Retrieve the values from the request body.
+  const name = req.body.name;
+  const password = req.body.password;
+
+  try {
+    // Search for the user that will be updated using the findOne method
+    const userToUpdate = await UserModel.findOne({ email: email });
+
+    // Check if the user was found
+    if (!userToUpdate) {
+      return res.status(404).json({ error: "User not found" });
+    }
+  } catch (err) {
+    // Handle errors, including database or validation issues
+    res.status(500).json({ error: err.message }); // Send a more descriptive error message
+  }
+});
+
+app.put("/updateUserProfile/:email/", async (req, res) => {
+
+  
+    try {
+
+      if (!userToUpdate) {
+        return res.status(404).json({ error: "User not found" });
+      }
+  
+      // Update the user's name
+      userToUpdate.name = name;
+  
+      //if the user changed the password, change the password in the Db to the new hashed password
+      if (password !== userToUpdate.password) {
+        const hashedpassword = await bcrypt.hash(password, 10);
+        userToUpdate.password = hashedpassword;
+      } else {
+        //if the user did not change the password
+        userToUpdate.password = password;
+      }
+  
+      // Save the updated user
+      await userToUpdate.save(); // Make sure to save the changes
+  
+      // Return the updated user as a response
+      res.send({ user: userToUpdate, msg: "Updated." });
+    } catch (error) {
+      // Handle errors, including database or validation issues
+      res.status(500).json({ error: error.message }); // Send a more descriptive error message optional
+    }
+  }); */
+
 
 //PUT API - likePost
 
